@@ -1,7 +1,7 @@
 import streamlit as st
 from groq import Groq
 
-# Function to initialize the Groq client
+
 def initialize_groq_client(api_key):
     try:
         return Groq(api_key=api_key)
@@ -9,7 +9,7 @@ def initialize_groq_client(api_key):
         st.error(f"Error initializing Groq client: {e}")
         return None
 
-def socratic_assistant_response(client, input_text, context=None, prompt=None):
+def windy_assistant_response(client, input_text, context=None):
     system_prompt = f"""
     You are a smart assistant for a wind energy platform designed to provide useful information and solve queries related to wind energy. Your task is to answer questions from users about wind turbines, energy generation, environmental impact, efficiency, maintenance, and industry trends. 
 Your responses should be concise, informative, and based on reliable data. Where applicable, include relevant metrics, tips, or industry standards. Some possible types of queries include:
@@ -43,14 +43,14 @@ Always ensure that your information is up-to-date, reliable, and tailored to the
 
 # Streamlit app
 def main():
-    st.set_page_config(page_title="Socratic Teaching Assistant", page_icon=":books:")
+    st.set_page_config(page_title="Windy", page_icon=":books:")
 
     st.title("Windy 💨")
 
     if "messages" not in st.session_state:
         st.session_state["messages"] = [{"role": "assistant", "content": "How can I help you today?"}]
 
-    # Display chat messages
+
     conversation_str = "\n".join([f"{m['role'].capitalize()}: {m['content']}" for m in st.session_state.messages])
     for msg in st.session_state.messages:
         if msg["role"] == "assistant":
@@ -58,24 +58,24 @@ def main():
         elif msg["role"] == "user":
             st.chat_message("user").write(msg["content"])
 
-    # Handle user input
+
     user_input = st.chat_input("Enter your question or response:")
     if user_input:
         st.session_state.messages.append({"role": "user", "content": user_input})
         st.chat_message("user").write(user_input)
 
-        # Initialize Groq client
+
         client_groq = initialize_groq_client("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")
         if client_groq is None:
             st.error("Failed to initialize the Groq client. Please check your API key.")
             st.stop()
 
-        # Prepare context
+
         context = conversation_str
 
-        # Generate assistant response
+ 
         try:
-            full_response = socratic_assistant_response(client_groq, user_input, context=context)
+            full_response = windy_assistant_response(client_groq, user_input, context=context)
             st.session_state.messages.append({"role": "assistant", "content": full_response})
             st.chat_message("assistant").write(full_response)
 

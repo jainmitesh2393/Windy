@@ -43,7 +43,7 @@ Always ensure that your information is up-to-date, reliable, and tailored to the
 
 # Streamlit app
 def main():
-    st.set_page_config(page_title="Windy", page_icon=":books:")
+    st.set_page_config(page_title="Windy", page_icon="💨")
 
     st.title("Windy 💨")
 
